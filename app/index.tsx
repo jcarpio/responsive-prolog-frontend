@@ -1,4 +1,4 @@
-import PrologMobile from "@/components/PrologMobile";
+import PrologMobile from "../components/PrologMobile";
 
 export default function Home() {
   return (
