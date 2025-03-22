@@ -1,9 +1,9 @@
 // app/layout.tsx
-import "./globals.css"; // si estás usando Tailwind u otros estilos globales
+import "../styles/globals.css"; // ⚠️ asegúrate de que este archivo existe
 
 export const metadata = {
   title: "Responsive Prolog",
-  description: "Editor Prolog móvil y sencillo",
+  description: "Ejecuta código Prolog desde tu móvil",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
