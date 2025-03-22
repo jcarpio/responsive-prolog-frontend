@@ -36,7 +36,7 @@ abuelo(X, Y) :- padre(X, Z), padre(Z, Y).`);
         <label className="form-label fw-bold">🔧 Base de conocimiento:</label>
         <textarea
           className="form-control"
-          style={{ height: '200px' }}
+          style={{ height: '200px', fontFamily: 'Courier, monospace' }}
           value={facts}
           onChange={(e) => setFacts(e.target.value)}
         />
@@ -46,7 +46,7 @@ abuelo(X, Y) :- padre(X, Z), padre(Z, Y).`);
         <label className="form-label fw-bold">❓ Consulta:</label>
         <textarea
           className="form-control"
-          style={{ height: '100px' }}
+          style={{ height: '100px', fontFamily: 'Courier, monospace' }}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
