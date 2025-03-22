@@ -1,39 +1,73 @@
 "use client";
 
 import { useState } from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function PrologMobile() {
-  const [code, setCode] = useState("?- member(X, [1,2,3]).");
+  const [facts, setFacts] = useState(`padre(juan, maria).
+padre(juan, pedro).
+padre(pedro, luis).
+abuelo(X, Y) :- padre(X, Z), padre(Z, Y).`);
+  const [query, setQuery] = useState("abuelo(X, luis).");
   const [output, setOutput] = useState("");
 
   const handleRun = async () => {
-    const response = await fetch("https://responsive-prolog-backend.onrender.com/run", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code }),
-    });
+    setOutput("⏳ Ejecutando...");
+    try {
+      const response = await fetch("https://responsive-prolog-backend.onrender.com/run", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ facts, query }),
+      });
 
-    const data = await response.json();
-    if (data.output) setOutput(data.output);
-    else setOutput("⚠️ Error: " + (data.error || "Error desconocido"));
+      const data = await response.json();
+      if (data.output) setOutput(data.output);
+      else setOutput("⚠️ Error: " + (data.error || "Desconocido"));
+    } catch (err) {
+      setOutput("⚠️ Error de red: " + err.message);
+    }
   };
 
   return (
-    <div className="min-h-screen p-4 bg-gray-100 flex flex-col gap-4">
-      <h1 className="text-2xl font-bold text-center">Prolog Mobile</h1>
+    <div className="container py-4">
+      <h1 className="text-center mb-4">🧠 Prolog Online</h1>
 
-      <textarea
-        className="w-full h-40 p-2 font-mono text-sm"
-        value={code}
-        onChange={(e) => setCode(e.target.value)}
-      />
-      <button className="bg-blue-600 text-white py-2 px-4 rounded" onClick={handleRun}>
-        Ejecutar
-      </button>
+      <div className="mb-4">
+        <label className="form-label fw-bold">🔧 Base de conocimiento:</label>
+        <textarea
+          className="form-control"
+          style={{ height: '200px' }}
+          value={facts}
+          onChange={(e) => setFacts(e.target.value)}
+        />
+      </div>
 
-      <pre className="bg-black text-white p-4 font-mono text-sm whitespace-pre-wrap">
-        {output || "Resultados aparecerán aquí..."}
-      </pre>
+      <div className="mb-4">
+        <label className="form-label fw-bold">❓ Consulta:</label>
+        <textarea
+          className="form-control"
+          style={{ height: '100px' }}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+      </div>
+
+      <div className="text-center mb-4">
+        <button
+          onClick={handleRun}
+          className="btn btn-primary btn-lg"
+        >
+          ▶️ Ejecutar
+        </button>
+      </div>
+
+      <div>
+        <label className="form-label fw-bold">📤 Resultado:</label>
+        <pre className="form-control bg-dark text-success" style={{ height: '200px', overflow: 'auto' }}>
+          {output || "(salida vacía)"}
+        </pre>
+      </div>
     </div>
   );
 }
+
