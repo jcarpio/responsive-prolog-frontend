@@ -1,3 +1,4 @@
+// app/page.tsx
 import PrologMobile from "../components/PrologMobile";
 
 export default function Home() {
